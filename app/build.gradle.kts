@@ -55,8 +55,14 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Encrypted Shared Prefrences
-    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation(libs.androidx.security.crypto)
 
     // Rooting Detection
-    implementation("com.google.android.gms:play-services-safetynet:17.0.0")
+    implementation(libs.play.services.safetynet)
+
+    // OkHttp library for networking
+    implementation(libs.okhttp)
+
+    // For logging network requests (optional, useful for debugging)
+    implementation(libs.logging.interceptor)
 }
