@@ -170,7 +170,6 @@ if (isDeviceRooted()) {
 }
 ```
 
----
 
 ### 2. SafetyNet Attestation API
 Google’s SafetyNet API can be used to detect whether the app is running on a rooted device or in a compromised environment.
@@ -222,5 +221,48 @@ fun verifySafetyNetResponse(jwsResult: String) {
 - Call the `checkSafetyNet()` function to check for rooting or device tampering.
 - The `SafetyNet` API will return a signed response indicating whether the device integrity is compromised.
 
----
+## 6. Emulator Detection
+
+### 1. **Device Properties Check**:
+
+You can check common properties like `ro.product.model`, `ro.hardware`, `ro.kernel.qemu`, etc. Emulators often have specific values for these properties.
+
+```kotlin
+fun isEmulator(): Boolean {
+    val isEmulatorBuild: Boolean =
+        Build.FINGERPRINT.startsWith("generic") ||
+        Build.FINGERPRINT.contains("emulator") ||
+        Build.MODEL.contains("Emulator") ||
+        Build.MODEL.contains("Android SDK built for x86") ||
+        Build.BRAND.startsWith("generic") ||
+        Build.DEVICE.startsWith("generic") ||
+        "google_sdk" == Build.PRODUCT
+
+    val qemuProp = System.getProperty("ro.kernel.qemu")?.toIntOrNull() == 1
+
+    return isEmulatorBuild || qemuProp
+}
+```
+
+### 2. **Sensor Validation**:
+
+You can check for the presence of real sensors like accelerometers or gyroscopes, which are often absent on emulators.
+
+```kotlin
+fun hasRealSensors(context: Context): Boolean {
+    val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+    
+    return accelerometer != null && gyroscope != null
+}
+```
+
+### Combined Detection:
+
+```kotlin
+fun isRunningOnEmulator(context: Context): Boolean {
+    return isEmulator() || !hasRealSensors(context)
+}
+```
 
