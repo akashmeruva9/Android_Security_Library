@@ -77,7 +77,7 @@ fun stopAppFunctionality() {
 }
 ```
 
-## APK Integrity Check
+### APK Integrity Check
 
 To ensure that your APK hasn't been tampered with, you can perform an integrity check by calculating the APK's checksum and comparing it to the original hash.
 
@@ -85,7 +85,6 @@ To ensure that your APK hasn't been tampered with, you can perform an integrity 
 1. **Calculate APK Checksum:** Use the `MessageDigest` class to compute the APK's SHA-256 hash.
 2. **Compare the Checksum:** Compare the calculated checksum with the original checksum to detect alterations.
 
-### Code Example:
 ```kotlin
 fun verifyAPKIntegrity(context: Context): Boolean {
     val apkFile = File(context.applicationInfo.sourceDir)
@@ -101,6 +100,32 @@ fun verifyAPKIntegrity(context: Context): Boolean {
     // Replace with your APK's original checksum
     val originalChecksum = "your_original_apk_checksum"
     return currentChecksum == originalChecksum
+}
+```
+
+## 4. Anti-Memory Dump and Memory Access Detection in Android
+
+This guide outlines how to implement anti-memory dump techniques and memory access detection in Android using encryption and JNI (Java Native Interface).
+
+### Memory Encryption
+To protect sensitive data in memory, it should be encrypted and only decrypted when required at runtime. After use, sensitive data should be cleared from memory.
+
+```kotlin
+fun encryptSensitiveData(data: ByteArray, secretKey: SecretKey): ByteArray {
+    val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+    return cipher.doFinal(data)
+}
+
+fun decryptSensitiveData(encryptedData: ByteArray, secretKey: SecretKey): ByteArray {
+    val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+    cipher.init(Cipher.DECRYPT_MODE, secretKey)
+    return cipher.doFinal(encryptedData)
+}
+
+fun clearSensitiveData(data: ByteArray) {
+    // Overwrite the sensitive data to clear it from memory
+    data.fill(0)
 }
 ```
 
