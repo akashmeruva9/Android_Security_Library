@@ -23,7 +23,7 @@
 
 ## 2. Integrity Protection (Hash Validation) :
 
-- We can use Encrypted Shared Prefrences to encrypt sensitive data, the encryption key is stored in the Android KeyStore for additional security.
+- We can use Encrypted Shared Prefrences to encrypt sensitive data.
 - Encrypted Shared Preferences provides a way to store key-value pairs in a SharedPreferences object that is encrypted and decrypted transparently.
 - The data is secured with the Android KeyStore system, which uses a hardware-backed keystore to protect the keys used for encryption and decryption.
 - To use encrpted shared prefrences add this dependency in your build.gradle file.
