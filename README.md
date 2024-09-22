@@ -1,6 +1,6 @@
 ## 1. Code Protection (DEX, SO, DLL Secured) :
 
-- To Configure Proguard and R8 in your android project, go to app level 'build.gradle' file and change the build type in to the following :
+- To Configure Proguard and R8 in your android project, go to app level `build.gradle` file and change the build type in to the following :
 
 ```Kotlin
     buildTypes {
@@ -26,7 +26,7 @@
 - We can use Encrypted Shared Prefrences to encrypt sensitive data.
 - Encrypted Shared Preferences provides a way to store key-value pairs in a SharedPreferences object that is encrypted and decrypted transparently.
 - The data is secured with the Android KeyStore system, which uses a hardware-backed keystore to protect the keys used for encryption and decryption.
-- To use encrpted shared prefrences add this dependency in your build.gradle file.
+- To use encrpted shared prefrences add this dependency in your `build.gradle` file.
 ```Kotlin
     dependencies {
         implementation "androidx.security:security-crypto:1.1.0-alpha03"
@@ -75,4 +75,32 @@ fun detectCheatTools(context: Context) {
 fun stopAppFunctionality() {
     // Logic to stop the app or block its functionality
 }
+```
+
+## APK Integrity Check
+
+To ensure that your APK hasn't been tampered with, you can perform an integrity check by calculating the APK's checksum and comparing it to the original hash.
+
+### Steps:
+1. **Calculate APK Checksum:** Use the `MessageDigest` class to compute the APK's SHA-256 hash.
+2. **Compare the Checksum:** Compare the calculated checksum with the original checksum to detect alterations.
+
+### Code Example:
+```kotlin
+fun verifyAPKIntegrity(context: Context): Boolean {
+    val apkFile = File(context.applicationInfo.sourceDir)
+    val digest = MessageDigest.getInstance("SHA-256")
+    val apkInputStream = apkFile.inputStream()
+    val buffer = ByteArray(1024)
+    var bytesRead: Int
+    while (apkInputStream.read(buffer).also { bytesRead = it } != -1) {
+        digest.update(buffer, 0, bytesRead)
+    }
+    val currentChecksum = digest.digest().joinToString("") { "%02x".format(it) }
+
+    // Replace with your APK's original checksum
+    val originalChecksum = "your_original_apk_checksum"
+    return currentChecksum == originalChecksum
+}
+```
 
