@@ -129,3 +129,98 @@ fun clearSensitiveData(data: ByteArray) {
 }
 ```
 
+## 5. Rooting Detection 
+
+### 1. File System Check
+You can check for the existence of common rooting files like `su` or `busybox` in the file system to detect rooted devices.
+
+#### Example:
+
+```kotlin
+fun isDeviceRooted(): Boolean {
+    val rootFiles = arrayOf(
+        "/system/app/Superuser.apk",
+        "/sbin/su",
+        "/system/bin/su",
+        "/system/xbin/su",
+        "/data/local/xbin/su",
+        "/data/local/bin/su",
+        "/system/sd/xbin/su",
+        "/system/bin/failsafe/su",
+        "/data/local/su",
+        "/system/xbin/busybox"
+    )
+
+    for (path in rootFiles) {
+        if (File(path).exists()) {
+            return true // Rooting files detected
+        }
+    }
+    return false
+}
+```
+
+### Usage:
+- Check for the presence of these files during app startup or periodically. If any of these files exist, the device may be rooted.
+- If rooting is detected, you can block app functionality or show a warning.
+
+```kotlin
+if (isDeviceRooted()) {
+    // Handle detection, e.g., block app or show a message
+}
+```
+
+---
+
+### 2. SafetyNet Attestation API
+Google’s SafetyNet API can be used to detect whether the app is running on a rooted device or in a compromised environment.
+
+#### Steps to implement:
+1. Add the required dependency in your `build.gradle`:
+   ```gradle
+   implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+   ```
+
+2. Request the SafetyNet Attestation:
+
+```kotlin
+fun checkSafetyNet(context: Context) {
+    val client = SafetyNet.getClient(context)
+    client.attest(nonce(), API_KEY)
+        .addOnSuccessListener { response ->
+            val jwsResult = response.jwsResult
+            // Parse and verify the JWS response for device integrity
+            verifySafetyNetResponse(jwsResult)
+        }
+        .addOnFailureListener { e ->
+            // Handle error
+        }
+}
+
+fun nonce(): ByteArray {
+    // Generate a nonce (random value for each request)
+    return "random_string".toByteArray()
+}
+
+fun verifySafetyNetResponse(jwsResult: String) {
+    // Parse and verify the response to check for device integrity
+    val parts = jwsResult.split(".")
+    val decoded = Base64.decode(parts[1], Base64.DEFAULT)
+    val json = JSONObject(String(decoded))
+    val isBasicIntegrity = json.getBoolean("basicIntegrity")
+    val isCTSProfileMatch = json.getBoolean("ctsProfileMatch")
+
+    if (isBasicIntegrity && isCTSProfileMatch) {
+        // Device passes SafetyNet checks (not rooted)
+    } else {
+        // Device is rooted or compromised
+    }
+}
+```
+
+### Usage:
+- Call the `checkSafetyNet()` function to check for rooting or device tampering.
+- The `SafetyNet` API will return a signed response indicating whether the device integrity is compromised.
+
+---
+
