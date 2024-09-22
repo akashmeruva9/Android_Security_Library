@@ -10,8 +10,14 @@ We have include the following base 8 security features in this respository :
 - [Anti-debugging and Anti-decompile](#section-7)
 - [Network Packet Sniffing](#section-8)
 
-[a relative link](CheatToolDetectionExample.kt)
 
+Checkout the following Code Implementations in this Repository :
+- [CheatToolDetectionExample.kt](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/CheatToolDetectionExample.kt)
+- [EmulatorDetectionExample.kt](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/EmulatorDetectionExample.kt)
+- [EncryptedSharedPrefrencesExample.kt](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/EncryptedSharedPrefrencesExample.kt)
+- [MemoryEncrytionExample.kt](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/MemoryEncrytionExample.kt)
+- [NetworkPacketSniffingExample.kt](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/NetworkPacketSniffingExample.kt)
+- [RootingDetectionExample](https://github.com/akashmeruva9/Android_Security_Library/blob/master/app/src/main/java/com/androidarmour/security_library/RootingDetectionExample.kt)
 
 
 # <a name="section-1">
