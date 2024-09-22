@@ -1,3 +1,19 @@
+# AndroidArmour
+
+We have include the following base 8 security features in this respository :
+- [Code Protection (DEX, SO, DLL Secured)](#section-1)
+- [Integrity Protection (Hash Validation)](#section-2)
+- [Cheat Tool Detection](#section-3)
+- [Anti-memory dump, Memory Access Detection](#section-4)
+- [Rooting Detection](#section-5)
+- [Android Emulator Detection](#section-6)
+- [Anti-debugging and Anti-decompile](#section-7)
+- [Network Packet Sniffing](#section-8)
+
+
+
+
+# <a name="section-1">
 ## 1. Code Protection (DEX, SO, DLL Secured) :
 
 - To Configure Proguard and R8 in your android project, go to app level `build.gradle` file and change the build type in to the following :
@@ -20,7 +36,9 @@
         }
     }
 ```
+</a>
 
+# <a name="section-2">
 ## 2. Integrity Protection (Hash Validation) :
 
 - We can use Encrypted Shared Prefrences to encrypt sensitive data.
@@ -50,7 +68,9 @@
 ```Kotlin
     val myValue = sharedPreferences.getString("my_key", "")
 ```
+</a>
 
+# <a name="section-3">
 ## 3.Cheat Tool Detection in Android
 
 This guide outlines how to detect cheat tools like GameGuardian in an Android application and how to perform an APK integrity check using checksum validation.
@@ -102,7 +122,10 @@ fun verifyAPKIntegrity(context: Context): Boolean {
     return currentChecksum == originalChecksum
 }
 ```
+</a>
 
+
+# <a name="section-4">
 ## 4. Anti-Memory Dump and Memory Access Detection in Android
 
 This guide outlines how to implement anti-memory dump techniques and memory access detection in Android using encryption and JNI (Java Native Interface).
@@ -128,7 +151,10 @@ fun clearSensitiveData(data: ByteArray) {
     data.fill(0)
 }
 ```
+</a>
 
+
+# <a name="section-5">
 ## 5. Rooting Detection 
 
 ### 1. File System Check
@@ -220,6 +246,10 @@ fun verifySafetyNetResponse(jwsResult: String) {
 ### Usage:
 - Call the `checkSafetyNet()` function to check for rooting or device tampering.
 - The `SafetyNet` API will return a signed response indicating whether the device integrity is compromised.
+</a>
+
+
+# <a name="section-6">
 
 ## 6. Emulator Detection
 
@@ -265,7 +295,11 @@ fun isRunningOnEmulator(context: Context): Boolean {
     return isEmulator() || !hasRealSensors(context)
 }
 ```
+</a>
 
+
+
+# <a name="section-7">
 ## 7. Anti-debugging and Anti-decompile:
 
 ### 1. **Anti-Debugging Techniques:**
@@ -352,6 +386,11 @@ In `proguard-rules.pro`:
 -dontoptimize
 -dontobfuscate
 ```
+
+</a>
+
+
+# <a name="section-8">
 ## 8.Netwrork Packet Sniffing:
 
 ### 1. **TLS Encryption:**
@@ -415,4 +454,4 @@ In this example, if the server’s certificate doesn’t match the pinned certif
 - Certificate pinning adds an extra layer of security against sniffing attacks but should be updated when the server certificate changes.
 
 This approach ensures that data packets are encrypted and that only your trusted server can be communicated with, securing your app from network sniffing attacks.
-
+</a>
