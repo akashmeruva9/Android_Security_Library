@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Security_Library"
         tools:targetApi="31">
         <activity
+            android:name=".RootingDetectionExample"
+            android:exported="false" />
+        <activity
             android:name=".MemoryEncrytionExample"
             android:exported="false" />
         <activity

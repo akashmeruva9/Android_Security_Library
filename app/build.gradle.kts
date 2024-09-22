@@ -56,4 +56,7 @@ dependencies {
 
     // Encrypted Shared Prefrences
     implementation("androidx.security:security-crypto:1.1.0-alpha03")
+
+    // Rooting Detection
+    implementation("com.google.android.gms:play-services-safetynet:17.0.0")
 }
